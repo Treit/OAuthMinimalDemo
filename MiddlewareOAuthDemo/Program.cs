@@ -29,7 +29,6 @@ builder.Services
     // code-for-token exchange, and sign-in to the cookie scheme configured above.
     .AddOAuth("Discord", options =>
     {
-
         // Placeholder values let the home page load before configuration; /login detects the real mistake.
         options.ClientId = string.IsNullOrWhiteSpace(discordClientId) ? "not-configured" : discordClientId;
         options.ClientSecret = string.IsNullOrWhiteSpace(discordClientSecret) ? "not-configured" : discordClientSecret;
@@ -62,7 +61,6 @@ builder.Services
         {
             OnCreatingTicket = async context =>
             {
-
                 // The handler already validated state and exchanged the authorization code for tokens before
                 // this event. Fetch the Discord profile with its access token, then apply the mappings above.
                 using var request = new HttpRequestMessage(HttpMethod.Get, context.Options.UserInformationEndpoint);
@@ -88,7 +86,6 @@ builder.Services
             },
             OnTicketReceived = context =>
             {
-
                 // This runs after remote authentication creates the ticket but before the handler writes the
                 // local cookie. It is useful for inspecting or changing the ticket before sign-in completes.
                 context.HttpContext.RequestServices
@@ -99,7 +96,6 @@ builder.Services
             },
             OnRemoteFailure = context =>
             {
-
                 // Provider denials and state-validation failures also arrive at CallbackPath. Handle the response
                 // so the default remote-authentication error page is not written after this friendly redirect.
                 context.HttpContext.RequestServices
@@ -149,7 +145,6 @@ app.MapGet("/", (HttpContext context) =>
 
 app.MapGet("/login", (HttpContext context) =>
 {
-
     // Fail before redirecting if secrets were not configured, so setup mistakes are obvious.
     if (string.IsNullOrWhiteSpace(discordClientId) ||
         string.IsNullOrWhiteSpace(discordClientSecret))
@@ -188,7 +183,6 @@ app.MapGet("/callback-complete", (HttpContext context) =>
 
 app.MapGet("/logout", async (HttpContext context) =>
 {
-
     // This removes only this application's cookie. It does not sign the person out of Discord itself.
     await context.SignOutAsync();
     return Results.Redirect("/");

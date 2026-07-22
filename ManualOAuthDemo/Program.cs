@@ -37,7 +37,6 @@ app.MapGet("/", () =>
 
 app.MapGet("/login", (HttpContext context) =>
 {
-
     // A missing client secret would cause a confusing failure at Discord's token endpoint.
     if (string.IsNullOrWhiteSpace(discordClientId) || string.IsNullOrWhiteSpace(discordClientSecret))
     {
@@ -55,7 +54,6 @@ app.MapGet("/login", (HttpContext context) =>
     var codeChallenge = WebEncoders.Base64UrlEncode(SHA256.HashData(Encoding.ASCII.GetBytes(codeVerifier)));
     var cookieOptions = new CookieOptions
     {
-
         // JavaScript cannot read these protocol secrets, reducing damage from a script-injection bug.
         HttpOnly = true,
 
@@ -82,7 +80,6 @@ app.MapGet("/login", (HttpContext context) =>
         "https://discord.com/api/oauth2/authorize",
         new Dictionary<string, string?>
         {
-
             // Discord uses this public identifier to find the registered application and redirect URI list.
             ["client_id"] = discordClientId,
 
@@ -108,7 +105,6 @@ app.MapGet("/login", (HttpContext context) =>
 // uses the client secret, exchanges the code for tokens, and calls Discord's API.
 app.MapGet("/auth/callback", async (HttpContext context, IHttpClientFactory clientFactory, IMemoryCache callbackResults) =>
 {
-
     // The provider can return an OAuth error instead of a code when sign-in is denied or malformed.
     var providerError = context.Request.Query["error"].FirstOrDefault();
     if (providerError is not null)
