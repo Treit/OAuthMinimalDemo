@@ -2,6 +2,8 @@
 
 Two minimal ASP.NET Core apps run Discord's real OAuth 2.0 authorization-code flow.
 
+If you are learning OAuth, watch [this video](https://youtu.be/996OiexHze0), then use these code examples to trace the flow step by step, preferably in a debugger.
+
 `ManualOAuthDemo` implements the redirects, `state` validation, PKCE, token exchange, and Discord profile request directly. It has a normal `MapGet("/auth/callback")` endpoint where every step is visible.
 
 `MiddlewareOAuthDemo` uses ASP.NET Core's OAuth handler to perform those steps and creates a local authentication cookie. Its middleware intercepts `/auth/callback`, so use its `OnCreatingTicket`, `OnTicketReceived`, and `OnRemoteFailure` events for breakpoints.
