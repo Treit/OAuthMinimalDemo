@@ -44,8 +44,8 @@ In both samples, the local callback represents the client application's backend 
 4. Run either project, then select **Sign in with Discord**:
 
    ```powershell
-   dotnet run --project .\ManualOAuthDemo --launch-profile https
-   dotnet run --project .\MiddlewareOAuthDemo --launch-profile https
+   dotnet run --project .\ManualOAuthDemo
+   dotnet run --project .\MiddlewareOAuthDemo
    ```
 
 Open <https://localhost:7176> for the manual demo or <https://localhost:7175> for the middleware demo. Approve Discord's `identify` scope.
