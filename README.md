@@ -21,6 +21,8 @@ In both samples, the local callback represents the client application's backend 
 
 ## Setup
 
+Run every terminal command below from the repository root, the directory that contains `OAuthMinimalDemo.slnx`, `ManualOAuthDemo`, and `MiddlewareOAuthDemo`. The `.\ManualOAuthDemo` and `.\MiddlewareOAuthDemo` paths are relative to that directory.
+
 1. Create a Discord application at <https://discord.com/developers/applications>. On **OAuth2**, add both redirect URIs exactly:
 
    ```text
