@@ -19,6 +19,37 @@ In both samples, the local callback represents the client application's backend 
 5. Discord returns tokens to the backend. The backend uses the access token to request the user's Discord profile.
 6. The manual demo displays that one-time result and does not create a session. The middleware demo maps the profile to claims and creates its own local authentication cookie, so later requests recognize the user without repeating the Discord redirect.
 
+## Glossary
+
+| Term | Meaning |
+| --- | --- |
+| OAuth 2.0 | A protocol that lets an application obtain limited access to a user's data at another service without learning the user's password. |
+| Client application | The application asking for access. In this repository, each ASP.NET Core demo is the client. |
+| Resource owner | The person who owns the data and grants access. Here, that is the Discord user. |
+| Authorization server | The service that signs in the user, asks for consent, and issues codes or tokens. Discord fills this role. |
+| Resource server | The service API that accepts an access token and returns protected data. Discord's user API is a resource server. |
+| Client ID | A public identifier for a registered client application. It tells Discord which application started the sign-in flow. |
+| Client secret | A credential known only to a confidential client application's backend and the authorization server. It authenticates the backend during the token exchange. |
+| Confidential client | A client with a backend that can keep a secret, such as these ASP.NET Core applications. |
+| Redirect URI or callback URI | The registered URL to which Discord returns the browser after sign-in. It must exactly match a URI registered with Discord. |
+| Authorization endpoint | The Discord endpoint where the browser is redirected to sign in and approve the requested access. |
+| Token endpoint | The Discord endpoint that the backend calls to exchange an authorization code for tokens. |
+| Authorization-code flow | The OAuth flow used by these demos. The browser receives a short-lived code, while the backend exchanges it for tokens. |
+| Authorization code | A short-lived, one-time value returned to the callback URI after the user approves access. It is not an access token. |
+| Access token | A short-lived credential the backend presents to a resource server to call an API for the approved scope. Treat it as sensitive. |
+| Refresh token | A longer-lived credential that can obtain a new access token without another sign-in. These demos do not request or use one. |
+| Scope | A named permission requested by the client. The `identify` scope lets these demos read the signed-in Discord user's basic profile. |
+| Consent | The user's approval of the requested scopes on the authorization server's page. |
+| `state` | A temporary, unpredictable value that the client sends with the authorization request and verifies at the callback. It binds the callback to the original login attempt and helps prevent cross-site request forgery. |
+| Cross-site request forgery (CSRF) | An attack that tries to cause a browser to complete an unwanted action. Validating `state` protects the OAuth callback from this attack. |
+| PKCE | Proof Key for Code Exchange. It binds the authorization code to the client that started the flow, reducing the harm if an intercepted code is stolen. |
+| Code verifier | The secret, random PKCE value retained by the client until the token exchange. |
+| Code challenge | A derived form of the code verifier sent in the authorization request. The authorization server compares it with the verifier during the token exchange. |
+| Token exchange | The backend-to-backend request that sends the authorization code, client credentials when applicable, and PKCE verifier to the token endpoint. |
+| Claim | A piece of information about an authenticated user, such as their Discord ID or name. The middleware demo maps the Discord profile into local claims. |
+| Authentication cookie | A cookie issued by the client application after OAuth completes. It represents the application's own local session, not the Discord access token. |
+| Bearer token | A token that grants access to whoever possesses it. Access tokens are commonly bearer tokens, so they must not be exposed in browser pages, source control, or logs. |
+
 ## Setup
 
 Run every terminal command below from the repository root, the directory that contains `OAuthMinimalDemo.slnx`, `ManualOAuthDemo`, and `MiddlewareOAuthDemo`. The `.\ManualOAuthDemo` and `.\MiddlewareOAuthDemo` paths are relative to that directory.
